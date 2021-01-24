@@ -1,3 +1,5 @@
+import Album from './Album';
+
 function App() {
   return (
 
@@ -8,7 +10,7 @@ function App() {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </head>
-      <h1>Save Our Faves - San Diego</h1>
+      <Album />
     </div>
   );
 }
