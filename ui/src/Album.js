@@ -90,7 +90,7 @@ export default function Album() {
                             <Grid container spacing={2} justify="center">
                                 <Grid item>
                                     <Button variant="contained" color="primary">
-                                        Add business
+                                        Add business (Coming soon!)
                                     </Button>
                                 </Grid>
                             </Grid>
