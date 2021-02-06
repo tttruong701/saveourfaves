@@ -18,6 +18,12 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.10.5</version>
         </dependency>
+<!--        TODO maybe not needed-->
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.dataformat</groupId>-->
+<!--            <artifactId>jackson-dataformat.yaml</artifactId>-->
+<!--            <version>2.10.5</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
@@ -36,10 +42,15 @@
 <!--        Why can't it be webflux?-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
             <version>2.4.2</version>
         </dependency>
-<!--        For documentation I think-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <!--        For documentation I think-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -53,8 +64,8 @@
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <!-- RELEASE_VERSION -->
-<!--                <version>5.0.0</version>-->
-                <version>4.2.3</version>
+                <version>5.0.0</version>
+<!--                <version>4.2.3</version>-->
                 <!-- /RELEASE_VERSION -->
                 <executions>
                     <execution>
@@ -64,8 +75,13 @@
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
                             <generatorName>spring</generatorName>
+                            <apiPackage>com.ttruong.api</apiPackage>
+                            <modelPackage>com.ttruong.model</modelPackage>
                             <configOptions>
                                 <sourceFolder>src/gen/java/main</sourceFolder>
+                                <reactive>true</reactive>
+                                <interfaceOnly>true</interfaceOnly>
+                                <skipDefaultInterface>true</skipDefaultInterface>
                             </configOptions>
                         </configuration>
                     </execution>
