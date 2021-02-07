@@ -8,10 +8,16 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   version: 0.0.1
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local environment
+
 tags:
   - name: business
+
 paths:
-  /business:
+  /v1/business:
     put:
       tags:
         - business
@@ -22,7 +28,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Business'
+              $ref: '#/components/schemas/BusinessV1'
         required: true
       responses:
         '400':
@@ -37,12 +43,18 @@ paths:
     get:
       summary: Get all businesses
       operationId: 'getAllBusiness'
-      responses:
-        default:
-          description: Default error sample response
       tags:
         - business
-  '/business/{businessId}':
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: 'array'
+                items:
+                  $ref: '#/components/schemas/BusinessV1'
+  /v1/business/{businessId}:
     get:
       tags:
         - business
@@ -61,45 +73,14 @@ paths:
         '200':
           description: successful operation
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Business'
             application/json:
               schema:
-                $ref: '#/components/schemas/Business'
+                $ref: '#/components/schemas/BusinessV1'
         '400':
           description: Invalid ID supplied
           content: {}
         '404':
           description: Business not found
-          content: {}
-    post:
-      tags:
-        - business
-      summary: Updates a business in the store with form data
-      operationId: updateBusinessWithForm
-      parameters:
-        - name: businessId
-          in: path
-          description: ID of business that needs to be updated
-          required: true
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                name:
-                  type: string
-                  description: Updated name of the business
-                status:
-                  type: string
-                  description: Updated status of the business
-      responses:
-        '405':
-          description: Invalid input
           content: {}
     delete:
       tags:
@@ -121,9 +102,10 @@ paths:
         '404':
           description: Business not found
           content: {}
+
 components:
   schemas:
-    Business:
+    BusinessV1:
       required:
         - id
         - name
@@ -138,4 +120,4 @@ components:
           example: Bahn Thai
         giftCardURL:
           type: string
-          example: https://www.bahnthai.net/gift-cards
+          example: https://www.bahnthai.net/gift-cards/
