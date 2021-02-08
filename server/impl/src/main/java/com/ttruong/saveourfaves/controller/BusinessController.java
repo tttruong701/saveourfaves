@@ -1,7 +1,7 @@
 package com.ttruong.saveourfaves.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 
 import com.ttruong.api.V1Api;
@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Controller
+@RestController
 @AllArgsConstructor
 public class BusinessController implements V1Api {
 
