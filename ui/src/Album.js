@@ -63,7 +63,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+// const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const cards = [
+    {
+        "id": 1,
+        "name": "Bahn Thai",
+        "giftCardURL": "https://www.bahnthai.net/gift-cards"
+    },
+    {
+        "id": 2,
+        "name": "Chicago Fire Grill",
+        "giftCardURL": "https://chicagofiregrill.com/"
+    }
+]
 
 export default function Album() {
     const classes = useStyles();
@@ -101,7 +113,7 @@ export default function Album() {
                     {/* End hero unit */}
                     <Grid container spacing={4}>
                         {cards.map((card) => (
-                            <Grid item key={card} xs={12} sm={6} md={4}>
+                            <Grid item key={card.id} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
                                     <CardMedia
                                         className={classes.cardMedia}
@@ -110,11 +122,11 @@ export default function Album() {
                                     />
                                     <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            Business Name
+                                            {card.name}
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button size="small" color="primary">
+                                        <Button size="small" color="primary" href={card.giftCardURL}>
                                             Purchase Gift Card
                     </Button>
                                     </CardActions>
