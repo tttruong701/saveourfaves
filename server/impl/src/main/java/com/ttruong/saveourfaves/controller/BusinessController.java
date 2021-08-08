@@ -1,6 +1,7 @@
 package com.ttruong.saveourfaves.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 
@@ -23,6 +24,7 @@ public class BusinessController implements V1Api {
         return null;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @Override
     public Mono<ResponseEntity<Flux<BusinessV1>>> getAllBusiness(ServerWebExchange exchange) {
         return Mono.just(ResponseEntity.ok()

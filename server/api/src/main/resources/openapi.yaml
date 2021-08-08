@@ -10,7 +10,7 @@ info:
   version: 0.0.1
 
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:8080/ # TODO Figure out why "api" is not in URI
     description: Local environment
 
 tags:

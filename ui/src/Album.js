@@ -80,6 +80,10 @@ const cards = [
 export default function Album() {
     const classes = useStyles();
 
+    fetch("http://localhost:8080/v1/business")
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+
     return (
         <React.Fragment>
             <CssBaseline />
