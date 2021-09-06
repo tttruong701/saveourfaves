@@ -31,6 +31,8 @@ paths:
               $ref: '#/components/schemas/BusinessV1'
         required: true
       responses:
+        '201':
+          description: Created successfully.
         '400':
           description: Invalid ID supplied
           content: {}

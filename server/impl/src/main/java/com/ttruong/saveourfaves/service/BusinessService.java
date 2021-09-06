@@ -1,12 +1,11 @@
 package com.ttruong.saveourfaves.service;
 
-import org.springframework.stereotype.Service;
-
 import com.ttruong.model.BusinessV1;
 import com.ttruong.saveourfaves.accessor.BusinessAccessor;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
@@ -20,5 +19,9 @@ public class BusinessService {
                         .id(Long.parseLong(b.getId()))
                         .name(b.getName())
                         .giftCardURL(b.getGiftCardURL()));
+    }
+
+    public Mono<Boolean> updateBusiness(BusinessV1 business) {
+        return Mono.just(businessAccessor.updateBusiness(business));
     }
 }

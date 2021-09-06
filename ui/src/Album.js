@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import StoreTwoToneIcon from '@material-ui/icons/StoreTwoTone';
@@ -13,14 +13,14 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import FormDialog from './FormDialog';
 
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                tttruong701
-      </Link>{' '}
+            <Link color="inherit" href="https://material-ui.com/">tttruong701</Link>
+            {' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
@@ -63,94 +63,92 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const cards = [
-    {
-        "id": 1,
-        "name": "Bahn Thai",
-        "giftCardURL": "https://www.bahnthai.net/gift-cards"
-    },
-    {
-        "id": 2,
-        "name": "Chicago Fire Grill",
-        "giftCardURL": "https://chicagofiregrill.com/"
-    }
-]
-
 export default function Album() {
     const classes = useStyles();
 
-    fetch("http://localhost:8080/v1/business")
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+    // Based on https://reactjs.org/docs/faq-ajax.html
+    const [error, setError] = useState(null);
+    // Flag is true if businesses have loaded.
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [businesses, setBusinesses] = useState([]);
 
-    return (
-        <React.Fragment>
-            <CssBaseline />
-            <AppBar className={classes.appBar} position="relative">
-                <Toolbar>
-                    <StoreTwoToneIcon className={classes.icon} />
-                </Toolbar>
-            </AppBar>
-            <main>
-                {/* Hero unit */}
-                <div className={classes.heroContent}>
-                    <Container maxWidth="sm">
-                        <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                            Save Our Faves SD
-            </Typography>
-                        <Typography variant="h8" align="center" color="textSecondary" paragraph>
-                            Let's help our local businesses survive the pandemic.
-            </Typography>
-                        <div className={classes.heroButtons}>
-                            <Grid container spacing={2} justify="center">
-                                <Grid item>
-                                    <Button variant="contained" color="primary">
-                                        Add business (Coming soon!)
-                                    </Button>
+    useEffect(() => {
+        fetch("http://localhost:8080/v1/business")
+            .then((response) => response.json())
+            .then(
+                (result) => {
+                setIsLoaded(true);
+                setBusinesses(result);
+            },
+                (error) => {
+                    setIsLoaded(true);
+                    setError(error);
+                }
+            )
+    }, [])
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    } else if (!isLoaded) {
+        return <div>Loading...</div>;
+    } else {
+        return (
+            <React.Fragment>
+                <CssBaseline />
+
+                {/* Navigation Bar */}
+                <AppBar className={classes.appBar} position="relative">
+                    <Toolbar>
+                        <StoreTwoToneIcon className={classes.icon} />
+                    </Toolbar>
+                </AppBar>
+
+                <main>
+
+                    {/* Hero unit */}
+                    <div className={classes.heroContent}>
+                        <Container maxWidth="sm">
+                            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>Save Our Faves SD</Typography>
+                            <Typography variant="h8" align="center" color="textSecondary" paragraph>Let's help our local businesses survive the COVID-19 pandemic.</Typography>
+                            <div className={classes.heroButtons}>
+                                <Grid container spacing={2} justify="center">
+                                    <Grid item>
+                                        <FormDialog></FormDialog>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </div>
+                            </div>
+                        </Container>
+                    </div>
+
+                    {/* Businesses */}
+                    <Container className={classes.cardGrid} maxWidth="md">
+                        <Grid container spacing={4}>
+                            {businesses.map((business) => (
+                                <Grid item key={business.id} xs={12} sm={6} md={4}>
+                                    <Card className={classes.card}>
+                                        <CardMedia className={classes.cardMedia} image="https://source.unsplash.com/random"title="Image title"/>
+                                        <CardContent className={classes.cardContent}>
+                                            <Typography gutterBottom variant="h5" component="h2">{business.name}</Typography>
+                                        </CardContent>
+                                        <CardActions>
+                                            <Button size="small" color="primary" href={business.giftCardURL}>Purchase Gift Card</Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Container>
-                </div>
-                <Container className={classes.cardGrid} maxWidth="md">
-                    {/* End hero unit */}
-                    <Grid container spacing={4}>
-                        {cards.map((card) => (
-                            <Grid item key={card.id} xs={12} sm={6} md={4}>
-                                <Card className={classes.card}>
-                                    <CardMedia
-                                        className={classes.cardMedia}
-                                        image="https://source.unsplash.com/random"
-                                        title="Image title"
-                                    />
-                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            {card.name}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button size="small" color="primary" href={card.giftCardURL}>
-                                            Purchase Gift Card
-                    </Button>
-                                    </CardActions>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Container>
-            </main>
-            {/* Footer */}
-            <footer className={classes.footer}>
-                <Typography variant="h6" align="center" gutterBottom>
-                    Footer
-        </Typography>
-                <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-                    Something here to give the footer a purpose!
-        </Typography>
-                <Copyright />
-            </footer>
-            {/* End footer */}
-        </React.Fragment>
-    );
+                </main>
+
+                {/* Footer */}
+                <footer className={classes.footer}>
+                    <Typography variant="h6" align="center" gutterBottom>Footer</Typography>
+                    <Typography variant="subtitle1" align="center" color="textSecondary" component="p">Something here to give the footer a purpose!</Typography>
+                    <Copyright />
+                </footer>
+
+            </React.Fragment>
+        );
+
+    }
 }
