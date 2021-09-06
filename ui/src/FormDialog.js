@@ -7,52 +7,27 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function FormDialog() {
-    const [open, setOpen] = React.useState(false);
-    const [url, setUrl] = React.useState("");
-    const [name, setName] = React.useState("");
+// export default function FormDialog({isDialogOpen, setIsDialogOpen, businessName, businessURL, handleChange, handleSubmit}) {
+export default function FormDialog(props) {
+    const { isDialogOpen, setIsDialogOpen, businessName, businessURL, handleChange, handleSubmit } = props;
 
-    const handleClickOpen = () => { setOpen(true); };
-    const handleClose = () => { setOpen(false); };
-    const handleChange = (event) => { 
-        if (event.target.type === 'text' ) {
-            setName(event.target.value);
-        } else {
-            setUrl(event.target.value);
-        }
+    const handleClickOpen = () => {
+        setIsDialogOpen(true);
     };
 
-    const handleSubmit = () => { 
-        const body = {
-            id: 42,
-            name: name,
-            giftCardURL: url
-        }
-        postData("http://localhost:8080/v1/business", body)
-            .then(data => {
-                console.log(data); // JSON data parsed by `data.json()` call
-            });
-        setOpen(false); 
+    const handleClose = () => {
+        setIsDialogOpen(false);
     };
-
-    async function postData(url = '', data = {}) {
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        return response.json(); 
-    }
 
     return (
         <div>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>Add Business</Button>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <Dialog open={isDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Add Business</DialogTitle>
                 <DialogContent>
                     <DialogContentText>Add a business</DialogContentText>
-                    <TextField autoFocus fullWidth margin="dense" id="name" label="Business name" type="text" value={name} onChange={handleChange} />
-                    <TextField autoFocus fullWidth margin="dense" id="url" label="Business URL" type="url" value={url} onChange={handleChange} />
+                    <TextField autoFocus fullWidth margin="dense" id="name" label="Business name" type="text" value={businessName} onChange={handleChange} />
+                    <TextField autoFocus fullWidth margin="dense" id="url" label="Business URL" type="url" value={businessURL} onChange={handleChange} />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">Cancel</Button>

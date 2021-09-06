@@ -72,6 +72,46 @@ export default function Album() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [businesses, setBusinesses] = useState([]);
 
+    // Add business form dialog props
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [businessName, setBusinessName] = useState("");
+    const [businessURL, setBusinessURL] = useState("");
+
+    const handleAddBusinessFormChange = (event) => {
+        if (event.target.type === 'text') {
+            setBusinessName(event.target.value);
+        } else {
+            setBusinessURL(event.target.value);
+        }
+    };
+
+    const handleAddBusinessFormSubmit = () => {
+        const body = {
+            id: 42,
+            name: businessName,
+            giftCardURL: businessURL
+        }
+
+        // TODO Move get under post
+        postData("http://localhost:8080/v1/business", body)
+            .then((response) => fetch("http://localhost:8080/v1/business"))
+            .then((response) => response.json())
+            .then((result) => setBusinesses(result), (error) => setError(error));
+
+        // TODO Clear forms
+        setIsDialogOpen(false);
+        setBusinessName("")
+        setBusinessURL("")
+    };
+
+    async function postData(url = '', data = {}) {
+        return await fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+    }
+
     useEffect(() => {
         fetch("http://localhost:8080/v1/business")
             .then((response) => response.json())
@@ -113,7 +153,14 @@ export default function Album() {
                             <div className={classes.heroButtons}>
                                 <Grid container spacing={2} justify="center">
                                     <Grid item>
-                                        <FormDialog></FormDialog>
+                                        <FormDialog
+                                            isDialogOpen={isDialogOpen}
+                                            setIsDialogOpen={setIsDialogOpen}
+                                            businessName={businessName}
+                                            businessURL={businessURL}
+                                            handleChange={handleAddBusinessFormChange}
+                                            handleSubmit={handleAddBusinessFormSubmit}>
+                                        </FormDialog>
                                     </Grid>
                                 </Grid>
                             </div>
