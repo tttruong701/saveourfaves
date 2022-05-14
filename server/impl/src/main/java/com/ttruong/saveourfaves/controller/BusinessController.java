@@ -27,8 +27,7 @@ public class BusinessController implements V1Api {
 
     @Override
     public Mono<ResponseEntity<Flux<BusinessV1>>> getAllBusiness(ServerWebExchange exchange) {
-        return Mono.just(ResponseEntity.ok()
-                .body(businessService.findAllBusinesses()));
+        return Mono.just(ResponseEntity.ok(businessService.findAllBusinesses()));
     }
 
     @Override
@@ -39,7 +38,6 @@ public class BusinessController implements V1Api {
     @Override
     public Mono<ResponseEntity<Void>> updateBusiness(Mono<BusinessV1> businessV1, ServerWebExchange exchange) {
         return businessV1.flatMap(businessService::updateBusiness)
-                .map(result -> (result ? ResponseEntity.ok() : ResponseEntity.badRequest()).body(null));
+                .map(business -> ResponseEntity.noContent().build());
     }
 }
-

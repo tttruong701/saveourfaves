@@ -7,21 +7,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-// export default function FormDialog({isDialogOpen, setIsDialogOpen, businessName, businessURL, handleChange, handleSubmit}) {
 export default function FormDialog(props) {
     const { isDialogOpen, setIsDialogOpen, businessName, businessURL, handleChange, handleSubmit } = props;
-
-    const handleClickOpen = () => {
-        setIsDialogOpen(true);
-    };
-
-    const handleClose = () => {
-        setIsDialogOpen(false);
-    };
-
+    const handleClose = () => setIsDialogOpen(false)
     return (
         <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>Add Business</Button>
+            <Button variant="outlined" color="primary" onClick={() => setIsDialogOpen(true)}>Add Business</Button>
             <Dialog open={isDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Add Business</DialogTitle>
                 <DialogContent>
