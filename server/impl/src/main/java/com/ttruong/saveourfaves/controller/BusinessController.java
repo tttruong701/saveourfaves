@@ -21,8 +21,9 @@ public class BusinessController implements V1Api {
     private final BusinessService businessService;
 
     @Override
-    public Mono<ResponseEntity<Void>> deleteBusiness(Long businessId, ServerWebExchange exchange) {
-        return null;
+    public Mono<ResponseEntity<Void>> deleteBusiness(String businessId, ServerWebExchange exchange) {
+        return businessService.deleteBusiness(businessId)
+                .then(Mono.just(ResponseEntity.noContent().build()));
     }
 
     @Override
@@ -31,13 +32,14 @@ public class BusinessController implements V1Api {
     }
 
     @Override
-    public Mono<ResponseEntity<BusinessV1>> getBusinessById(Long businessId, ServerWebExchange exchange) {
-        return null;
+    public Mono<ResponseEntity<BusinessV1>> getBusinessById(String businessId, ServerWebExchange exchange) {
+        return businessService.getBusiness(businessId)
+                .map(ResponseEntity::ok);
     }
 
     @Override
     public Mono<ResponseEntity<Void>> updateBusiness(Mono<BusinessV1> businessV1, ServerWebExchange exchange) {
         return businessV1.flatMap(businessService::updateBusiness)
-                .map(business -> ResponseEntity.noContent().build());
+                .then(Mono.just(ResponseEntity.noContent().build()));
     }
 }

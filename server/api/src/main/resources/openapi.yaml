@@ -69,8 +69,7 @@ paths:
           description: ID of business to return
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: successful operation
@@ -95,8 +94,7 @@ paths:
           description: Business id to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '400':
           description: Invalid ID supplied
@@ -109,10 +107,14 @@ components:
   schemas:
     BusinessV1:
       required:
+        - id
         - name
         - giftCardURL
       type: object
       properties:
+        id:
+          type: string
+          example:  c12e34cf-fba1-4890-a335-1ecedc1bf727
         name:
           type: string
           example: Bahn Thai

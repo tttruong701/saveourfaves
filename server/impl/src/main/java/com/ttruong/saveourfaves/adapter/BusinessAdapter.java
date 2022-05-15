@@ -6,6 +6,7 @@ import com.ttruong.saveourfaves.model.Business;
 public class BusinessAdapter {
     public static BusinessV1 convert(Business business) {
         return new BusinessV1()
+                .id(business.getId())
                 .name(business.getName())
                 .giftCardURL(business.getGiftCardURL());
     }
