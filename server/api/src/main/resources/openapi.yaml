@@ -1,0 +1,123 @@
+openapi: 3.0.1
+info:
+  title: Save Our Faves San Diego API
+  description: >-
+    The Save Our Faves San Diego API is a simple CRUD API for retrieving
+    business information.
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 0.0.1
+
+servers:
+  - url: http://localhost:8080/ # TODO Figure out why "api" is not in URI
+    description: Local environment
+
+tags:
+  - name: business
+
+paths:
+  /v1/business:
+    put:
+      tags:
+        - business
+      summary: Create or update a business
+      operationId: updateBusiness
+      requestBody:
+        description: Business object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessV1'
+        required: true
+      responses:
+        '201':
+          description: Created successfully.
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: Business not found
+          content: {}
+        '405':
+          description: Validation exception
+          content: {}
+    get:
+      summary: Get all businesses
+      operationId: 'getAllBusiness'
+      tags:
+        - business
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: 'array'
+                items:
+                  $ref: '#/components/schemas/BusinessV1'
+  /v1/business/{businessId}:
+    get:
+      tags:
+        - business
+      summary: Find business by ID
+      description: Returns a single business
+      operationId: getBusinessById
+      parameters:
+        - name: businessId
+          in: path
+          description: ID of business to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessV1'
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: Business not found
+          content: {}
+    delete:
+      tags:
+        - business
+      summary: Deletes a business
+      operationId: deleteBusiness
+      parameters:
+        - name: businessId
+          in: path
+          description: Business id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: Business not found
+          content: {}
+
+components:
+  schemas:
+    BusinessV1:
+      required:
+        - id
+        - name
+        - giftCardURL
+      type: object
+      properties:
+        id:
+          type: string
+          example:  c12e34cf-fba1-4890-a335-1ecedc1bf727
+        name:
+          type: string
+          example: Bahn Thai
+        giftCardURL:
+          type: string
+          example: https://www.bahnthai.net/gift-cards/
